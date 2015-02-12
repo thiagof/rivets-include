@@ -101,7 +101,8 @@
       if (this.clear) this.clear();
     },
     routine: function(el, value) {
-      this.load(value);
+      var path = el.getAttribute('rv-include')
+      this.load(path);
     }
   };
 });
