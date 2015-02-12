@@ -43,20 +43,16 @@
           return;
         }
 
-        request.get(path, onLoaded);
-
-        function onLoaded(err, response) {
-          var body = response.text;
-
-          if (err) {
-            self.clear();
-            if (console) console.error(err);
-            return;
-          }
-
+        $.get(path)
+        .done(function(body) {
           include(body);
           cache[path] = body;
-        }
+        })
+        .fail(function(err) {
+          self.clear();
+          if (console) console.error(err);
+          return;
+        });
 
         function transformWithEngine(html, engine, models) {
           var engines = rivets.binders.include.engines;
@@ -85,15 +81,13 @@
           self.nested = rivets.bind(els, models, options);
 
           // dispatch include event
-          var event = new CustomEvent('include', {
+          $(el).trigger('include', {
             detail: {
               path: path
             },
             bubbles: true,
             cancelable: true
-          });
-
-          el.dispatchEvent(event);
+          })
         }
       };
     },
@@ -101,7 +95,8 @@
       if (this.clear) this.clear();
     },
     routine: function(el, value) {
-      this.load(value);
+      var path = el.getAttribute('rv-include')
+      this.load(path);
     }
   };
 });
