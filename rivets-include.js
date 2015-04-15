@@ -3,15 +3,15 @@
   'use strict';
   if (typeof exports === 'object') {
     // CommonJS
-    factory(require('rivets'), require('superagent'));
+    factory(require('rivets'), require('superagent'), jQuery);
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(['rivets', 'superagent'], factory);
   } else {
     // Browser globals
-    factory(root.rivets, root.request);
+    factory(root.rivets, root.request, jQuery);
   }
-})(this, function(rivets, request) {
+})(this, function(rivets, request, $) {
   rivets.binders.include = {
     engines: {},
     cache: {},
